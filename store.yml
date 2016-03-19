@@ -1,0 +1,15 @@
+# ======= Store Options ====================================================================
+# EnableStore: True or false, if false /cg store will be disabled and below config ignored.
+# MoneyItem: Each of these counts as 1 cost. Set costs in gear config.
+#     Material: Material type i.e DIAMOND_BLOCK, GOLD_ORE, etc.
+#     Name: Sets the item meta name. The name will be displayed as the name of the currency.
+#     Lore: 
+#     - 'Add a description of the item'
+# MoneyCode: Code for all Money Items to use. Only money items with this code are valid.
+EnableStore: true
+MoneyItem:
+    Material: NETHER_STAR
+    Name: '&4Star Dust'
+    Lore:
+    - '&eThe default money item for the store'
+    MoneyCode: money

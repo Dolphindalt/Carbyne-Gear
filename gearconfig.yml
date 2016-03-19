@@ -1,0 +1,568 @@
+# Config Tutorial
+#
+# Name: Name of the item.
+# DisplayName: ID for each item, important they are all different.
+# Durability: Number of hits until the item breaks.
+# Lore:
+# - 'String list format like this'
+# - 'Second string in lore'
+# Enchants:
+# - name,level
+# -  protection,2
+# DefensiveEffect: effect,chance 1 = 100% 0.5 = 50% etc,duration in ticks
+# ex. DefensiveEffect: DAMAGE_RESISTANCE,1,40
+# OffensiveEffect works exactly like defensive effect.
+# ====== List of Effects ===================================================================
+# ABSORPTION, BLINDNESS, CONFUSION, DAMAGE_RESISTANCE, FAST_DIGGING, FIRE_RESISTANCE, HARM
+# HEAL, HEALTH_BOOST, HUNGER, INCREASE_DAMAGE, INVISIBILITY, JUMP, NIGHT_VISION, POISON,
+# REGENERATION, SATURATION, SLOW, SLOW_DIGGING, SPEED, WATER_BREATHING, WEAKNESS, WITHER.
+# ==========================================================================================
+# For Weapons:
+# 	Special: Name of special
+# ============ List of Specials ============================
+# ForceBlast, LightningStorm, ShadowSweep, SummonHealing.
+# ==========================================================
+#	SpecialCost: Number of charges to cast. Maximum 50.
+# For Armour:
+# Armour Rating: Percent of damage blocked by this piece.
+# With armour rating keep in mind diamond blocks 0.80 or 80% damage in a full set.
+Black:
+    Helmet:
+        Name: '&4Test Helmet'
+        DisplayName: 'TTH'
+        Durability: 100
+        Lore:
+        - '&eTest'
+        Enchants:
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+    Chestplate:
+        Name: '&4Test Chesplate'
+        DisplayName: 'TTC'
+        Durability: 100
+        Lore:
+        - '&eTest'
+        Enchants:
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+        DefensiveEffect:
+    Leggings:
+        Name: '&4Test Leggings'
+        DisplayName: 'TTL'
+        Durability: 100
+        Lore:
+        - '&eTest'
+        Enchants:
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+    Boots:
+        Name: '&4Test Boots'
+        DisplayName: 'TTB'
+        Durability: 100
+        Lore:
+        - '&eTest'
+        Enchants:
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+Red:
+    Helmet:
+        Name: '&4Bloody marry'
+        DisplayName: 'RH'
+        Durability: 100
+        Lore:
+        - '&eIm bloodlust for the slightest taste of blood...'
+        - ' I MUST SOLVE MY THIRST I MUST FEED ON THE LIVING'
+        Enchants:
+        - protection,6
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+    Chestplate:
+        Name: '&4Bloody marry'
+        DisplayName: 'RC'
+        Durability: 100
+        Lore:
+        - '&eIm bloodlust for the slightest taste of blood...'
+        - ' I MUST SOLVE MY THIRST I MUST FEED ON THE LIVING'
+        Enchants:
+        - protection,6
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+        DefensiveEffect:
+    Leggings:
+        Name: '&4Bloody marry'
+        DisplayName: 'RL'
+        Durability: 100
+        Lore:
+        - '&eIm bloodlust for the slightest taste of blood...'
+        - ' I MUST SOLVE MY THIRST I MUST FEED ON THE LIVING'
+        Enchants:
+        - protection,6
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+    Boots:
+        Name: '&4Bloody marry'
+        DisplayName: 'RB'
+        Durability: 100
+        Lore:
+        - '&eIm bloodlust for the slightest taste of blood...'
+        - ' I MUST SOLVE MY THIRST I MUST FEED ON THE LIVING'
+        Enchants:
+        - protection,6
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+Green: 
+    Helmet: 
+        Name: '&2Grass cutter'
+        DisplayName: 'GH'
+        Durability: 100
+        Lore:
+        - '&2The smell of freshly cut grass..'
+        Enchants:
+        - protection,6
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+    Chestplate:
+        Name: '&2Grass cutter'
+        DisplayName: 'GC'
+        Durability: 100
+        Lore:
+        - '&2The smell of freshly cut grass..'
+        Enchants:
+        - protection,6
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+        DefensiveEffect:
+    Leggings:
+        Name: '&2Grass cutter'
+        DisplayName: 'GL'
+        Durability: 100
+        Lore:
+        - '&2The smell of freshly cut grass..'
+        Enchants:
+        - protection,6
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+    Boots:
+        Name: '&2Grass cutter'
+        DislayName: 'GB'
+        Durability: 100
+        Lore:
+        - '&2The smell of freshly cut grass..'
+        Enchants:
+        - protection,6
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+Blue:
+    Helmet: 
+        Name: '&2Ocean armor'
+        DisplayName: 'BH'
+        Durability: 100
+        Lore:
+        - '&9Dont lose your self in the power of the ocean...'
+        Enchants:
+        - protection,6
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+    Chestplate:
+        Name: '&2Ocean armor'
+        DisplayName: 'BC'
+        Durability: 100
+        Lore:
+        - '&9Dont lose your self in the power of the ocean...'
+        Enchants:
+        - protection,6
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+        DefensiveEffect:
+    Leggings:
+        Name: '&2Ocean armor'
+        DisplayName: 'BL'
+        Durability: 100
+        Lore:
+        - '&9Dont lose your self in the power of the ocean...'
+        Enchants:
+        - protection,6
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+    Boots:
+        Name: '&2Ocean armor'
+        DisplayName: 'BB'
+        Durability: 100
+        Lore:
+        - '&9Dont lose your self in the power of the ocean...'
+        Enchants:
+        - protection,6
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+White:
+    Helmet: 
+        Name: '&4P&bR&3I&aZ&fE&cD'
+        DisplayName: 'WH'
+        Durability: 100
+        Lore:
+        - '&3Rarest of them all!'
+        Enchants:
+        - protection,6
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+    Chestplate:
+        Name: '&4P&bR&3I&aZ&fE&cD'
+        DisplayName: 'WC'
+        Durability: 100
+        Lore:
+        - '&3Rarest of them all!'
+        Enchants:
+        - protection,6
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+        DefensiveEffect:
+    Leggings:
+        Name: '&4P&bR&3I&aZ&fE&cD'
+        DisplayName: 'WL'
+        Durability: 100
+        Lore:
+        - '&3Rarest of them all!'
+        Enchants:
+        - protection,6
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+    Boots:
+        Name: '&4P&bR&3I&aZ&fE&cD'
+        DisplayName: 'WB'
+        Durability: 100
+        Lore:
+        - '&3Rarest of them all!'
+        Enchants:
+        - protection,6
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+Purple:
+    Helmet: 
+        Name: '&2Ender armor'
+        DisplayName: 'PH'
+        Durability: 100
+        Lore:
+        - '&2Telleport to the end of time!'
+        Enchants:
+        - protection,6
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+    Chestplate:
+        Name: '&2Ender armor'
+        DisplayName: 'PC'
+        Durability: 100
+        Lore:
+        - '&2Telleport to the end of time!'
+        Enchants:
+        - protection,6
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+        DefensiveEffect:
+    Leggings:
+        Name: '&2Ender armor'
+        DisplayName: 'PL'
+        Durability: 100
+        Lore:
+        - '&2Telleport to the end of time!'
+        Enchants:
+        - protection,6
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+    Boots:
+        Name: '&2Ender armor'
+        DisplayName: 'PB'
+        Durability: 100
+        Lore:
+        - '&2Telleport to the end of time!'
+        Enchants:
+        - protection,6
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+Teal:
+    Helmet: 
+        Name: '&2Titan Helmet'
+        DisplayName: 'TH'
+        Durability: 100
+        Lore:
+        - '&2Two immortal Titans have battled since the dawn of time'
+        Enchants:
+        - protection,6
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+    Chestplate:
+        Name: '&2Titan Chestplate'
+        DisplayName: 'TC'
+        Durability: 100
+        Lore:
+        - '&2Two immortal Titans have battled since the dawn of time'
+        Enchants:
+        - protection,6
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+        DefensiveEffect: DAMAGE_RESISTANCE,1.0,100
+    Leggings:
+        Name: '&2Titan Leggings'
+        DisplayName: 'TL'
+        Durability: 100
+        Lore:
+        - '&2Two immortal Titans have battled since the dawn of time'
+        Enchants:
+        - protection,6
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+    Boots:
+        Name: '&2Titan Boots'
+        DisplayName: 'TB'
+        Durability: 100
+        Lore:
+        - '&2Two immortal Titans have battled since the dawn of time'
+        Enchants:
+        - protection,6
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+Pink:
+    Helmet: 
+        Name: '&2The bloody bitch'
+        DisplayName: 'PH'
+        Durability: 100
+        Lore:
+        - '&2Dont be a fool its only once a month'
+        Enchants:
+        - protection,6
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+    Chestplate:
+        Name: '&2The bloody bitch'
+        DisplayName: 'PC'
+        Durability: 100
+        Lore:
+        - '&2Dont be a fool its only once a month'
+        Enchants:
+        - protection,6
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+        DefensiveEffect:
+    Leggings:
+        Name: '&2The bloody bitch'
+        DisplayName: 'PL'
+        Durability: 100
+        Lore:
+        - '&2Dont be a fool its only once a month'
+        Enchants:
+        - protection,6
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+    Boots:
+        Name: '&2The bloody bitch'
+        DisplayName: 'PB'
+        Durability: 100
+        Lore:
+        - '&2Dont be a fool its only once a month'
+        Enchants:
+        - protection,6
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+Orange:
+    Helmet: 
+        Name: '&2Jump Suit'
+        DisplayName: 'OH'
+        Durability: 100
+        Lore:
+        - '&fIve been in here long enough!'
+        - 'time to run!'
+        Enchants:
+        - protection,6
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+    Chestplate:
+        Name: '&2Jump Suit'
+        DisplayName: 'OC'
+        Durability: 100
+        Lore:
+        - '&fIve been in here long enough!'
+        - 'time to run!'
+        Enchants:
+        - protection,6
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+        DefensiveEffect:
+    Leggings:
+        Name: '&2Jump Suit'
+        DisplayName: 'OL'
+        Durability: 100
+        Lore:
+        - '&fIve been in here long enough!'
+        - 'time to run!'
+        Enchants:
+        - protection,6
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+    Boots:
+        Name: '&2Jump Suit'
+        DisplayName: 'OB'
+        Durability: 100
+        Lore:
+        - '&fIve been in here long enough!'
+        - 'time to run!'
+        Enchants:
+        - protection,6
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+Yellow:
+    Helmet: 
+        Name: '&eYellow jacket'
+        DisplayName: 'YH'
+        Durability: 100
+        Lore:
+        - '&2&nSTING &2like a bee!'
+        Enchants:
+        - protection,6
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+    Chestplate:
+        Name: '&eYellow jacket'
+        DisplayName: 'YC'
+        Durability: 100
+        Lore:
+        - '&2&nSTING &2like a bee!'
+        Enchants:
+        - protection,6
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+        DefensiveEffect:
+    Leggings:
+        Name: '&eYellow jacket'
+        DisplayName: 'YL'
+        Durability: 100
+        Lore:
+        - '&2&nSTING &2like a bee!'
+        Enchants:
+        - protection,6
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+    Boots:
+        Name: '&eYellow jacket'
+        DisplayName: 'YB'
+        Durability: 100
+        Lore:
+        - '&2&nSTING &2like a bee!'
+        Enchants:
+        - protection,6
+        Hidden: false
+        Cost: 10
+        ArmorRating: 0.20
+Weapons:
+    Sword:
+        1:
+            Name: '&4Test Sword'
+            DisplayName: 'sword'
+            Type: diamond
+            Durability: 100
+            Lore:
+            - '&ei cut you muhaha'
+            Enchants:
+            - sharpness,2
+            - unbreaking,10
+            Hidden: false
+            Cost: 10
+            Special: SummonHealing
+            SpecialCost: 1
+            OffensiveEffect: INCREASE_DAMAGE,1.0,100
+    Axe:
+        1:
+            Name: '&4Test axe'
+            DisplayName: 'Axe'
+            Type: diamond
+            Durability: 100
+            Lore:
+            - '&ei cut trees'
+            Enchants:
+            - sharpness,10
+            Hidden: false
+            Cost: 10
+            Special: LightningStorm
+            SpecialCost: 3
+            OffensiveEffect:
+    Bow:
+        1:
+            Name: '&4Test bow'
+            DisplayName: 'Bow'
+            Durability: 100
+            Lore:
+            - '&I shoot you down!'
+            Enchants:
+            - power,10
+            Hidden: false
+            Cost: 10
+            Special:
+            SpecialCost:
+            OffensiveEffect:
+    Hoe:
+        1:
+            Name: '&4Test hoe'
+            DisplayName: 'hoe'
+            Type: diamond
+            Durability: 100
+            Lore:
+            - '&ebest hoe in the wild west.. sure is wild..'
+            Enchants:
+            - sharpness,2
+            Hidden: false
+            Cost: 10
+            Special:
+            SpecialCost:
+            OffensiveEffect:
+    Spade:
+        1:
+            Name: '&4Test spade'
+            DisplayName: 'spade'
+            Type: diamond
+            Durability: 100
+            Lore:
+            - '&ebest spade around'
+            Enchants:
+            - durability,2
+            Hidden: false
+            Cost: 10
+            Special:
+            SpecialCost:
+            OffensiveEffect:
