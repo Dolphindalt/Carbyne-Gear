@@ -16,12 +16,13 @@ import code.op.gear.CarbyneListener;
 import code.op.gear.GearCommands;
 import code.op.gear.GearHandler;
 import code.op.sb.CGScoreboard;
+import code.op.sb.ScoreboardRunner;
 
 /*
  *  Credit to Frodenkvist for the firstRun and copy methods.
  */
 
-public class Main extends JavaPlugin implements Runnable {
+public class Main extends JavaPlugin {
 
 	public final Logger logger = Logger.getLogger("Minecraft");
 	
@@ -35,7 +36,6 @@ public class Main extends JavaPlugin implements Runnable {
 	
 	private CPManager cpm;
 	private GearHandler gh;
-	private CGScoreboard scoreboard;
 	
 	public void onEnable() {
 		instance = this;
@@ -54,7 +54,6 @@ public class Main extends JavaPlugin implements Runnable {
 		gh = new GearHandler();
 		
 		cpm = new CPManager();
-		scoreboard = new CGScoreboard(this, cpm);
 		
 		registerCommands();
 		registerEvents();
@@ -65,14 +64,9 @@ public class Main extends JavaPlugin implements Runnable {
 		
 	}
 	
-	@Override
-	public void run() {
-		scoreboard.tick();
-	}
-	
 	//Registers
 	private void registerTasks() {
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this, 20, 20);
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new ScoreboardRunner(new CGScoreboard(this, cpm)), 20, 20);
 	}
 	
 	private void registerEvents() {
