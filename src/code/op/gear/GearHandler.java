@@ -323,4 +323,8 @@ public class GearHandler {
 		return enableStore;
 	}
 	
+	public List<CarbyneGear> getGear() {
+		return gear;
+	}
+	
 }

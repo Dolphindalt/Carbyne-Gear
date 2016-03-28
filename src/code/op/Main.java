@@ -34,6 +34,7 @@ public class Main extends JavaPlugin implements Runnable {
 	public FileConfiguration storeData;
 	
 	private CPManager cpm;
+	private GearHandler gh;
 	private CGScoreboard scoreboard;
 	
 	public void onEnable() {
@@ -50,6 +51,7 @@ public class Main extends JavaPlugin implements Runnable {
 		
 		GearHandler.load(gearData);
 		GearHandler.loadStoreOptions(storeData);
+		gh = new GearHandler();
 		
 		cpm = new CPManager();
 		scoreboard = new CGScoreboard(this, cpm);
@@ -123,6 +125,10 @@ public class Main extends JavaPlugin implements Runnable {
 
 	public CPManager getCpm() {
 		return cpm;
+	}
+	
+	public GearHandler getGearHanlder() {
+		return gh;
 	}
 	
 }

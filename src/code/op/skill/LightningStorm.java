@@ -14,16 +14,16 @@ import code.op.utils.CustomEntityFirework;
 
 public class LightningStorm extends Special {
 
+	private final FireworkEffect.Builder builder = FireworkEffect.builder();
+	private final FireworkEffect fe = builder.flicker(true).with(Type.BURST).withColor(Color.AQUA).trail(false).build();
 	
 	public boolean run(Player caster)
 	{
 		final Location center = caster.getEyeLocation();
-		final FireworkEffect.Builder builder = FireworkEffect.builder();
 		final Location start1 = new Location(center.getWorld(),center.getX()+7,center.getY()+15,center.getZ());
 		final Location start2 = start1.clone();
 		try
 		{
-			final FireworkEffect fe = builder.flicker(true).with(Type.BURST).withColor(Color.AQUA).trail(false).build();
 			CustomEntityFirework.spawn(start1, fe);
 			Bukkit.getScheduler().scheduleSyncDelayedTask(Main.instance, new Runnable()
 			{
