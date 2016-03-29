@@ -11,6 +11,11 @@ public class GearCommands implements CommandExecutor{
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if (cmd.getName().equalsIgnoreCase("cg")) {
+			try {
+				if (args[0] == null) return true;
+			} catch (Exception ex) {
+				return true;
+			}
 			if (args[0].equalsIgnoreCase("store")) {
 				if (!GearHandler.isEnableStore()) return true;
 				try {

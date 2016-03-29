@@ -37,7 +37,6 @@ public class CarbyneListener implements Listener {
 	@EventHandler
 	public void onDamage(EntityDamageEvent e) {
 		if (e.getEntity() instanceof Player) {
-			Bukkit.broadcastMessage("Damage: " + e.getDamage());
 			Player p = (Player) e.getEntity();
 			double ap = 0;
 			for (ItemStack is : p.getInventory().getArmorContents()) {
@@ -61,9 +60,7 @@ public class CarbyneListener implements Listener {
 			if (ap != 0) {
 				double d = 0;
 				d = (e.getDamage() - (e.getDamage()*ap) - (e.getOriginalDamage(DamageModifier.RESISTANCE)*-1));
-			Bukkit.broadcastMessage("Damage Multiplied: " + e.getDamage()*ap);
-			Bukkit.broadcastMessage("OD Armor: " + e.getOriginalDamage(DamageModifier.ARMOR));
-			Bukkit.broadcastMessage("After Damage: " + d);
+			Bukkit.broadcastMessage("Damage for " + e.getEntity() + ": " + d);
 			if (d >= p.getHealth()) {
 				p.setHealth(0);
 				return;
