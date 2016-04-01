@@ -65,7 +65,12 @@ public class CarbyneListener implements Listener {
 				p.setHealth(0);
 				return;
 			}
+			if (p.isBlocking()) {
 			p.damage(d);
+			} else {
+				d = 0.32/d;
+				p.damage(d);
+			}
 			e.setDamage(0);
 			}
 		}
