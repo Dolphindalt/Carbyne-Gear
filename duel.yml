@@ -1,0 +1,23 @@
+Duel:
+  Enable: true
+  World: world
+  Spawn1:
+    X:
+    Y:
+    Z:
+  Spawn2:
+    X:
+    Y:
+    Z:
+  Wait1:
+    X:
+    Y:
+    Z:
+  Wait2:
+    X:
+    Y:
+    Z:
+  End:
+    X:
+    Y:
+    Z:

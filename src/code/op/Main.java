@@ -12,6 +12,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import code.op.duel.DuelInstance;
+import code.op.duel.DuelListener;
 import code.op.gear.CarbyneListener;
 import code.op.gear.GearCommands;
 import code.op.gear.GearHandler;
@@ -30,9 +32,12 @@ public class Main extends JavaPlugin {
 	
 	public File gearconfigFile;
 	public File storeFile;
+	public File duelFile;
 	
 	public FileConfiguration gearData;
 	public FileConfiguration storeData;
+	
+	public FileConfiguration duelData;
 	
 	private CPManager cpm;
 	private GearHandler gh;
@@ -41,6 +46,7 @@ public class Main extends JavaPlugin {
 		instance = this;
 		gearconfigFile = new File(getDataFolder(), "gearconfig.yml");
 		storeFile = new File(getDataFolder(), "store.yml");
+		duelFile = new File(getDataFolder(), "duel.yml");
 		try {
 			firstRun();
 		} catch (Exception e) {
@@ -49,11 +55,15 @@ public class Main extends JavaPlugin {
 		gearData = YamlConfiguration.loadConfiguration(gearconfigFile);
 		storeData = YamlConfiguration.loadConfiguration(storeFile);
 		
+		duelData = YamlConfiguration.loadConfiguration(duelFile);
+		
 		GearHandler.load(gearData);
 		GearHandler.loadStoreOptions(storeData);
 		gh = new GearHandler();
 		
 		cpm = new CPManager();
+		
+		DuelInstance.loadDuel(duelData);
 		
 		registerCommands();
 		registerEvents();
@@ -73,6 +83,9 @@ public class Main extends JavaPlugin {
 		PluginManager pm = Bukkit.getServer().getPluginManager();
 		pm.registerEvents(new CarbyneListener(this), this);
 		pm.registerEvents(new CPListeners(this), this);
+		if (DuelInstance.z != null) {
+			pm.registerEvents(new DuelListener(DuelInstance.z), this);
+		}
 	}
 	
 	private void registerCommands() {
@@ -89,6 +102,11 @@ public class Main extends JavaPlugin {
 	    {
 	        storeFile.getParentFile().mkdirs();
 	        copy(getResource("store.yml"), storeFile);
+	    }
+	    if(!duelFile.exists())
+	    {
+	        duelFile.getParentFile().mkdirs();
+	        copy(getResource("duel.yml"), duelFile);
 	    }
 	}
 	

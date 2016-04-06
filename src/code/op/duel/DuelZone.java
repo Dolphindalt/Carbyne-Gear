@@ -5,17 +5,16 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-public class DuelZone {
+import code.op.Main;
 
-	private boolean enabled;
+public class DuelZone {
 	
 	private Player p1;
 	private Player p2;
 	
 	private Location wait1, wait2, spawn1, spawn2, end;
 	
-	public DuelZone(boolean enabled, Player p1, Player p2, Location spawn1, Location spawn2, Location wait1, Location wait2, Location end) {
-		this.enabled = enabled;
+	public DuelZone(Location spawn1, Location spawn2, Location wait1, Location wait2, Location end) {
 		this.p1 = null;
 		this.p2 = null;
 		this.spawn1 = spawn1;
@@ -36,6 +35,17 @@ public class DuelZone {
 			p.sendMessage(ChatColor.RED + "The duel zone is in use!");
 			return;
 		}
+		if (p1 != null && p2 != null) countdown();
+	}
+	
+	public void countdown() {
+		p1.sendMessage(ChatColor.YELLOW + "Duel will begin in ten seconds...");
+		p2.sendMessage(ChatColor.YELLOW + "Duel will begin in ten seconds...");
+		Bukkit.getScheduler().scheduleSyncDelayedTask(Main.instance, new Runnable() {
+			public void run() {
+				startDuel();
+			}
+		},200L);
 	}
 	
 	public void startDuel() {
@@ -71,10 +81,6 @@ public class DuelZone {
 
 	public void setP2(Player p2) {
 		this.p2 = p2;
-	}
-
-	public boolean isEnabled() {
-		return enabled;
 	}
 	
 }

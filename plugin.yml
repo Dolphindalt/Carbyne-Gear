@@ -8,6 +8,8 @@ commands:
         description: Main command. Stands for Carbyne Gear.
     party:
         description: Party commands.
+    duel:
+        description: Duel commands.
 permisions:
     carbyne.admin:
         description: Admin permissions for the entire plugin.
