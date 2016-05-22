@@ -267,8 +267,8 @@ public class GearHandler {
 		}
 		//Normal Player Buy
 		try {
-			ItemStack money = buyer.getInventory().getItemInMainHand();
-			if (moneyCode.equals(HiddenStringUtils.extractHiddenString(buyer.getInventory().getItemInMainHand().getItemMeta().getLore().get(0)))) {
+			ItemStack money = buyer.getInventory().getItemInHand();
+			if (moneyCode.equals(HiddenStringUtils.extractHiddenString(buyer.getInventory().getItemInHand().getItemMeta().getLore().get(0)))) {
 				if (money.getAmount() >= cg.getCost()) {
 					if (money.getAmount() == cg.getCost()) {
 						buyer.getInventory().remove(money);

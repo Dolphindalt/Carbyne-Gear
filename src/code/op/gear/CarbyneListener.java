@@ -76,7 +76,6 @@ public class CarbyneListener implements Listener {
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onEntityDamagebyEntity(EntityDamageByEntityEvent e) {
 		if (e.getEntity() instanceof Player) {
@@ -110,7 +109,7 @@ public class CarbyneListener implements Listener {
 					Namer.setLore(is, old);
 				} else {
 					attacked.getInventory().remove(is);
-					attacked.playSound(attacked.getLocation(), Sound.ENTITY_ITEM_BREAK, 1, 1);
+					attacked.playSound(attacked.getLocation(), Sound.ITEM_BREAK, 1, 1);
 				}
 			}
 		}
@@ -138,7 +137,7 @@ public class CarbyneListener implements Listener {
 					Namer.setLore(is, old);
 				} else {
 					damager.getInventory().remove(is);
-					damager.playSound(damager.getLocation(), Sound.ENTITY_ITEM_BREAK, 1, 1);
+					damager.playSound(damager.getLocation(), Sound.ITEM_BREAK, 1, 1);
 				}
 			}
 		}
@@ -148,7 +147,7 @@ public class CarbyneListener implements Listener {
 	public void onInteract(PlayerInteractEvent e) {
 		if(!e.getAction().equals(Action.RIGHT_CLICK_AIR) && !e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
 		if(!e.getPlayer().isSneaking()) return;
-		ItemStack is = e.getPlayer().getInventory().getItemInMainHand();
+		ItemStack is = e.getPlayer().getInventory().getItemInHand();
 		if (is == null) return;
 		CarbyneWeapon cw = GearHandler.getCarbyneWeapon(is);
 		if (cw == null) return;
