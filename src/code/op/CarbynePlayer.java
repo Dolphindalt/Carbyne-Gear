@@ -27,8 +27,19 @@ public class CarbynePlayer {
 		this.obj.setDisplaySlot(DisplaySlot.SIDEBAR);
 		this.board.getObjective(DisplaySlot.SIDEBAR).getScore("Health").setScore((int) p.getHealth());
 		this.board.getObjective(DisplaySlot.SIDEBAR).getScore("Charges").setScore(0);
+		this.board.getObjective(DisplaySlot.SIDEBAR).getScore("Helmet").setScore(0);
+		this.board.getObjective(DisplaySlot.SIDEBAR).getScore("Chestplate").setScore(0);
+		this.board.getObjective(DisplaySlot.SIDEBAR).getScore("Leggings").setScore(0);
+		this.board.getObjective(DisplaySlot.SIDEBAR).getScore("Boots").setScore(0);
 	}
 
+	public void updateArmorDurability(double a, double a2, double a3, double a4) {
+		this.board.getObjective(DisplaySlot.SIDEBAR).getScore("Helmet").setScore((int) a4);
+		this.board.getObjective(DisplaySlot.SIDEBAR).getScore("Chestplate").setScore((int) a3);
+		this.board.getObjective(DisplaySlot.SIDEBAR).getScore("Leggings").setScore((int) a2);
+		this.board.getObjective(DisplaySlot.SIDEBAR).getScore("Boots").setScore((int) a);
+	}
+	
 	public Player getP() {
 		return p;
 	}

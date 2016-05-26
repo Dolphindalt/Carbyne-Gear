@@ -4,12 +4,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
 import code.op.Main;
 import code.op.utils.ColorUtils;
 import code.op.utils.HiddenStringUtils;
@@ -110,6 +114,36 @@ public class GearHandler {
 				}
 			}
 		}
+		
+		/**
+		 * This section loads the minecraft armor defaults, it exludes chain because it is not craftable
+		 */
+		ConfigurationSection cs = fc.getConfigurationSection("MinecraftArmor");
+		for(String material : cs.getKeys(false)) {
+			String type = new String();
+			for(int i = 0; i < 4; i++) {
+				switch(i) {
+				case 0:
+					type = "Helmet";
+					break;
+				case 1:
+					type = "Chestplate";
+					break;
+				case 2: 
+					type = "Leggings";
+					break;
+				case 3:
+					type = "Boots";
+					break;
+				}
+				CarbyneGear ma = new MinecraftArmor();
+				if(ma.load(cs.getConfigurationSection(material), type, null)) {
+					MinecraftArmor.defaultArmors.put(ma.getItem().getType(), ma.getItem());
+				
+				} else Main.instance.logger.log(Level.SEVERE, "[CarbyneGear]: MinecraftArmor configuration has falied to load " + cs + "." + type + "!");
+			}
+		}
+		Main.instance.logger.info(MinecraftArmor.defaultArmors.toString());
 		Collections.sort(gear, new CarbyneGearComparator());
 		
 		//Sort out hiddens into new list

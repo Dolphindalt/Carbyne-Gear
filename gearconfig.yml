@@ -566,3 +566,47 @@ Weapons:
             Special:
             SpecialCost:
             OffensiveEffect:
+#
+# This section is for configuring the default Minecraft armours and adding Carbyne versions of them
+#
+MinecraftArmor:
+# These are the durability and armour ratings for the default Minecraft armours that CAN BE CRAFTED!
+    Diamond:
+        Helmet:
+            Durability: 1000
+            ArmorRating: 2.0
+        Chestplate:
+            Durability: 1200
+            ArmorRating: 2.0
+        Leggings:
+            Durability: 1100
+            ArmorRating: 2.0
+        Boots:
+            Durability: 950
+            ArmorRating: 2.0
+    Iron:
+        Helmet:
+            Durability: 1000
+            ArmorRating: 1.0
+        Chestplate:
+            Durability: 1200
+            ArmorRating: 1.0
+        Leggings:
+            Durability: 1100
+            ArmorRating: 1.0
+        Boots:
+            Durability: 950
+            ArmorRating: 1.0
+    Gold:
+        Helmet:
+            Durability: 1000
+            ArmorRating: 1.0
+        Chestplate:
+            Durability: 1200
+            ArmorRating: 1.0
+        Leggings:
+            Durability: 1100
+            ArmorRating: 1.0
+        Boots:
+            Durability: 950
+            ArmorRating: 1.0

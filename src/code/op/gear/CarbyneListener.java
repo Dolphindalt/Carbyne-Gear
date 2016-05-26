@@ -1,8 +1,6 @@
 package code.op.gear;
 
 import java.util.List;
-
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -15,8 +13,11 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scoreboard.DisplaySlot;
 
 import code.op.CPManager;
 import code.op.CarbynePlayer;
@@ -40,27 +41,16 @@ public class CarbyneListener implements Listener {
 			Player p = (Player) e.getEntity();
 			double ap = 0;
 			for (ItemStack is : p.getInventory().getArmorContents()) {
-				if (!GearHandler.isCarbyneArmor(is)) {
-					Material type = is.getType();
-					if (type.equals(Material.DIAMOND_HELMET) || type.equals(Material.DIAMOND_CHESTPLATE) ||
-						type.equals(Material.DIAMOND_LEGGINGS) || type.equals(Material.DIAMOND_BOOTS)) {
-						ap = ap + 0.20;
-					} else if (type.equals(Material.LEATHER_HELMET) || type.equals(Material.LEATHER_CHESTPLATE) ||
-							type.equals(Material.LEATHER_LEGGINGS) || type.equals(Material.LEATHER_BOOTS)) {
-						ap = ap + 0.07;
-					} else {
-						if (type != Material.AIR) {
-							ap = ap + 0.15;
-						}
-					}
-					continue;
+				if (is.getType().equals(Material.AIR)) continue;
+				try {
+					ap = ap + Double.parseDouble(is.getItemMeta().getLore().get(2).split("\\s+")[2]);
+				} catch (NullPointerException ex) {
+					// If this gets called, the armor is invalid.
 				}
-				ap = ap + Double.parseDouble(is.getItemMeta().getLore().get(2).split("\\s+")[2]);
- 			}
+			}
 			if (ap != 0) {
 				double d = 0;
 				d = (e.getDamage() - (e.getDamage()*ap) - (e.getOriginalDamage(DamageModifier.RESISTANCE)*-1));
-			Bukkit.broadcastMessage("Damage for " + e.getEntity() + ": " + d);
 			if (d >= p.getHealth()) {
 				p.setHealth(0);
 				return;
@@ -107,7 +97,9 @@ public class CarbyneListener implements Listener {
 					old.remove(1);
 					old.add(1, ChatColor.RED + "Durability: " + durability);
 					Namer.setLore(is, old);
+					cpm.getCPByName(attacked.getName()).getBoard().getObjective(DisplaySlot.SIDEBAR).getScore(parseArmorType(is.getType())).setScore((int) durability);
 				} else {
+					cpm.getCPByName(attacked.getName()).getBoard().getObjective(DisplaySlot.SIDEBAR).getScore(parseArmorType(is.getType())).setScore((int) durability);
 					attacked.getInventory().remove(is);
 					attacked.playSound(attacked.getLocation(), Sound.ITEM_BREAK, 1, 1);
 				}
@@ -143,6 +135,10 @@ public class CarbyneListener implements Listener {
 		}
 	}
 	
+	/**
+	 * If a player right clicks air and is sneaking, they are checked if they can use a special. If they can they use the special.
+	 * @param e
+	 */
 	@EventHandler
 	public void onInteract(PlayerInteractEvent e) {
 		if(!e.getAction().equals(Action.RIGHT_CLICK_AIR) && !e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
@@ -158,6 +154,10 @@ public class CarbyneListener implements Listener {
 		}
 	}
 	
+	/**
+	 * On an entities death, if the killer is a player, his special charges will increase and update.
+	 * @param e
+	 */
 	@EventHandler
 	public void onEntityDeath(EntityDeathEvent e) {
 		LivingEntity le = e.getEntity();
@@ -169,6 +169,54 @@ public class CarbyneListener implements Listener {
 				kp.setSpecialCount(kp.getSpecialCount() + 1);
 			}
 		}
+	}
+	
+	/**
+	 * This method checks if the player is crafting a minecraft armor peice (excluding chain). The peice will be replaced
+	 * by a MinecraftArmor getItem() itemstack. If the ItemStack is null a warning will display.
+	 * @param e the craft item event in question
+	 */
+	@EventHandler
+	public void onCraftItem(CraftItemEvent e) {
+		try {
+			if (MinecraftArmor.defaultArmors.get(e.getCurrentItem().getType()).getType().equals(e.getCurrentItem().getType())) {
+				e.setCurrentItem(MinecraftArmor.defaultArmors.get(e.getCurrentItem().getType()));
+			}
+			} catch (NullPointerException ex) {
+				//This will catch if it is not armor
+			}
+	}
+	
+	/**
+	 * Set the players scoreboard for armor durability on inventory close.
+	 * @param e
+	 */
+	@EventHandler
+	public void onInventoryClose(InventoryCloseEvent e) {
+		double[] a = {0,0,0,0};
+		ItemStack[] ac = e.getPlayer().getInventory().getArmorContents();
+		for(int i = 0; i < 4; i++) {
+			if (ac[i].equals(Material.AIR)) {
+				continue;
+			}
+			if (MinecraftArmor.defaultArmors.containsKey(ac[i]) || GearHandler.isCarbyneArmor(ac[i])) {
+				a[i] = Double.parseDouble(ac[i].getItemMeta().getLore().get(1).split("\\s+")[1]);
+			}
+			continue;
+		}
+		cpm.getCPByName(e.getPlayer().getName()).updateArmorDurability(a[0], a[1], a[2], a[3]);
+	}
+	
+	public String parseArmorType(Material material) {
+		if(material.toString().contains("HELMET")) {
+			return "Helmet";
+		} else if(material.toString().contains("CHESTPLATE")) {
+			return "Chestplate";
+		} else if(material.toString().contains("LEGGINGS")) {
+			return "Leggings";
+		} else if (material.toString().contains("BOOTS")) {
+			return "Boots";
+		} else return null;
 	}
 	
 }

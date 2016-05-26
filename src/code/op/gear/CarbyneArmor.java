@@ -159,5 +159,9 @@ public class CarbyneArmor extends CarbyneGear {
 	public void setChance(double chance) {
 		this.chance = chance;
 	}
+
+	public double getArmorRating() {
+		return armorRating;
+	}
 	
 }
