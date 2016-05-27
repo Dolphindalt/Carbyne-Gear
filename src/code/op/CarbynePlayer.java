@@ -11,7 +11,6 @@ public class CarbynePlayer {
 
 	private Player p;
 	private String name;
-	private int specialCount;
 	
 	private ScoreboardManager man;
 	private Scoreboard board;
@@ -20,13 +19,11 @@ public class CarbynePlayer {
 	public CarbynePlayer(Player p) {
 		this.p = p;
 		this.name = p.getName();
-		this.specialCount = 0;
 		this.man = Bukkit.getScoreboardManager();
 		this.board = man.getNewScoreboard();
 		this.obj = board.registerNewObjective(name, "dummy");
 		this.obj.setDisplaySlot(DisplaySlot.SIDEBAR);
 		this.board.getObjective(DisplaySlot.SIDEBAR).getScore("Health").setScore((int) p.getHealth());
-		this.board.getObjective(DisplaySlot.SIDEBAR).getScore("Charges").setScore(0);
 		this.board.getObjective(DisplaySlot.SIDEBAR).getScore("Helmet").setScore(0);
 		this.board.getObjective(DisplaySlot.SIDEBAR).getScore("Chestplate").setScore(0);
 		this.board.getObjective(DisplaySlot.SIDEBAR).getScore("Leggings").setScore(0);
@@ -50,14 +47,6 @@ public class CarbynePlayer {
 	
 	public String getName() {
 		return name;
-	}
-
-	public int getSpecialCount() {
-		return specialCount;
-	}
-
-	public void setSpecialCount(int specialCount) {
-		this.specialCount = specialCount;
 	}
 
 	public Scoreboard getBoard() {

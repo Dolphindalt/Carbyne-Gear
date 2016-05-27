@@ -17,7 +17,6 @@ public class CGScoreboard {
 		for (CarbynePlayer p : cpm.getPlayers()) {
 			Player pl = p.getP();
 			pl.setScoreboard(p.getBoard());
-			p.getObj().getScore("Charges").setScore(p.getSpecialCount());
 			p.getObj().getScore("Health").setScore((int) pl.getHealth());
 		}
 	}

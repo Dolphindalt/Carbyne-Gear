@@ -20,7 +20,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scoreboard.DisplaySlot;
 
 import code.op.CPManager;
-import code.op.CarbynePlayer;
 import code.op.Main;
 import code.op.utils.Namer;
 
@@ -149,7 +148,7 @@ public class CarbyneListener implements Listener {
 		if (cw == null) return;
 		if (cw.getSpecialName() != null && cw.getSpecialCost() != -1) {
 			if(cpm.containsPlayer(e.getPlayer())) {
-				cw.useSpecial(cpm.getCPByName(e.getPlayer().getName()));
+				cw.useSpecial(cw, cpm.getCPByName(e.getPlayer().getName()));
 			}
 		}
 	}
@@ -162,12 +161,21 @@ public class CarbyneListener implements Listener {
 	public void onEntityDeath(EntityDeathEvent e) {
 		LivingEntity le = e.getEntity();
 		if (le.getKiller() instanceof Player) {
-			Player killer = le.getKiller();
-			if (cpm.containsPlayer(killer)) {
+			ItemStack is = le.getKiller().getItemInHand();
+			if (GearHandler.isCarbyneWeapon(is)) {
+				CarbyneWeapon cw = GearHandler.getCarbyneWeapon(is);
+				String[] chargeLine = is.getItemMeta().getLore().get(2).split("\\s+");
+				int am = Integer.parseInt(chargeLine[1]);
+				if (am == cw.getSpecialCost()) return;
+				am++;
+				Namer.setLore(is, "Charge: " + am + " / " + cw.getSpecialCost(), 2);
+				cw.setSpecialCharges(am);
+			}
+			/*if (cpm.containsPlayer(killer)) {
 				CarbynePlayer kp = cpm.getCPByName(killer.getName());
 				if(kp.getSpecialCount() == 50) return;
 				kp.setSpecialCount(kp.getSpecialCount() + 1);
-			}
+			}*/
 		}
 	}
 	

@@ -31,6 +31,7 @@ public class CarbyneWeapon extends CarbyneGear {
 	private String material = new String();
 	private int specialCost = -1;
 	private Special special;
+	private int specialCharges = 0;
 	private PotionEffect effect;
 	private double chance;
 	
@@ -45,18 +46,20 @@ public class CarbyneWeapon extends CarbyneGear {
 		if((displayName = cs.getString(material + "." + color.asRGB() + ".DisplayName")) == null) return false;
 		if((cost = cs.getInt(material + "." + color.asRGB() + ".Cost")) == -1) return false;
 		
+		if (cs.getString(material + "." + color.asRGB() + ".Special") != null) {
+			this.special = getSpecial(cs.getString(material + "." + color.asRGB() + ".Special"));
+			this.specialCost = cs.getInt(material + "." + color.asRGB() + ".SpecialCost");
+		}
+		
 		this.name = cs.getString(material + "." + color.asRGB() + ".Name");
 		this.displayName = cs.getString(material + "." + color.asRGB() + ".DisplayName");
 		this.lore = cs.getStringList(material + "." + color.asRGB() + ".Lore");
+		this.lore.add(0, ChatColor.AQUA + "Charge: 0 / " + specialCost);
 		this.lore.add(0, ChatColor.RED + "Durability: " + cs.getInt(material + "." + color.asRGB() + ".Durability"));
 		this.lore.add(0, HiddenStringUtils.encodeString(code));
 		this.enchants = cs.getStringList(material + "." + color.asRGB() + ".Enchants");
 		this.hidden = cs.getBoolean(material + "." + color.asRGB() + ".Hidden");
 		this.cost = cs.getInt(material + "." + color.asRGB() + ".Cost");
-		if (cs.getString(material + "." + color.asRGB() + ".Special") != null) {
-		this.special = getSpecial(cs.getString(material + "." + color.asRGB() + ".Special"));
-		this.specialCost = cs.getInt(material + "." + color.asRGB() + ".SpecialCost");
-		}
 		
 		if (cs.getString(material + "." + color.asRGB() + ".OffensiveEffect") != null) {
 			String offensiveEffect = cs.getString(material + "." + color.asRGB() + ".OffensiveEffect");
@@ -241,12 +244,12 @@ public class CarbyneWeapon extends CarbyneGear {
 		}
 	}
 	
-	public boolean useSpecial(CarbynePlayer p) {
+	public boolean useSpecial(CarbyneWeapon cw, CarbynePlayer p) {
 		if(special == null) return false;
 		if(getSpecialCost() == -1) return false;
-		if(p.getSpecialCount() < this.getSpecialCost()) return false;
+		if(cw.getSpecialCharges() < this.getSpecialCost()) return false;
 		if(!special.run(p.getP())) return false;
-		p.setSpecialCount(p.getSpecialCount() - this.getSpecialCost());
+		cw.setSpecialCharges((cw.getSpecialCharges() - this.getSpecialCost()));
 		for (Entity e : p.getP().getNearbyEntities(50, 50, 50)) {
 			if (e instanceof Player) {
 				((Player)e).sendMessage(ChatColor.AQUA + " .::::." + ChatColor.YELLOW + p.getName() + " has casted " + ChatColor.BOLD.toString() + ChatColor.RED + special.getName() + "! " + ChatColor.AQUA + ".::::.");
@@ -277,6 +280,14 @@ public class CarbyneWeapon extends CarbyneGear {
 	
 	public int getSpecialCost() {
 		return specialCost;
+	}
+	
+	public void setSpecialCharges(int specialCharges) {
+		this.specialCharges = specialCharges;
+	}
+
+	public int getSpecialCharges() {
+		return specialCharges;
 	}
 
 	public String getMaterial() {
