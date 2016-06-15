@@ -36,6 +36,7 @@ public class CarbyneListener implements Listener {
 	
 	@EventHandler
 	public void onDamage(EntityDamageEvent e) {
+		if (e.isCancelled()) return;
 		if (e.getEntity() instanceof Player) {
 			Player p = (Player) e.getEntity();
 			double ap = 0;
