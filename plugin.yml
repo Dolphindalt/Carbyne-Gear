@@ -3,6 +3,7 @@ main: code.op.Main
 version: 0.3
 description: Carbyne weapons and armors.
 author: Dolphindalt
+softdepend: [Towny]
 commands:
     cg:
         description: Main command. Stands for Carbyne Gear.

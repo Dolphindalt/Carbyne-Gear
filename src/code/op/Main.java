@@ -9,12 +9,16 @@ import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import com.palmergames.bukkit.towny.Towny;
 
 import code.op.gear.CarbyneListener;
 import code.op.gear.GearCommands;
 import code.op.gear.GearHandler;
+import code.op.misc.DamageListener;
 import code.op.sb.CGScoreboard;
 import code.op.sb.ScoreboardRunner;
 
@@ -35,11 +39,23 @@ public class Main extends JavaPlugin {
 	public FileConfiguration gearData;
 	public FileConfiguration storeData;
 	
+	public static Plugin townyPlugin;
+	public static Towny towny;
+	public static boolean townyEnabled = false;
+	
 	private CPManager cpm;
 	private GearHandler gh;
 	
 	public void onEnable() {
 		instance = this;
+		PluginManager pm = Bukkit.getServer().getPluginManager();
+		
+		if (pm.isPluginEnabled("Towny")) {
+			townyPlugin = pm.getPlugin("Towny");
+			towny = (Towny) townyPlugin;
+			townyEnabled = true;
+		}
+		
 		gearconfigFile = new File(getDataFolder(), "gearconfig.yml");
 		storeFile = new File(getDataFolder(), "store.yml");
 		duelFile = new File(getDataFolder(), "duel.yml");
@@ -58,7 +74,7 @@ public class Main extends JavaPlugin {
 		cpm = new CPManager();
 		
 		registerCommands();
-		registerEvents();
+		registerEvents(pm);
 		registerTasks();
 	}
 	
@@ -71,10 +87,10 @@ public class Main extends JavaPlugin {
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new ScoreboardRunner(new CGScoreboard(this, cpm)), 20, 20);
 	}
 	
-	private void registerEvents() {
-		PluginManager pm = Bukkit.getServer().getPluginManager();
+	private void registerEvents(PluginManager pm) {
 		pm.registerEvents(new CarbyneListener(this), this);
 		pm.registerEvents(new CPListeners(this), this);
+		if (townyEnabled) pm.registerEvents(new DamageListener(), this);
 	}
 	
 	private void registerCommands() {
