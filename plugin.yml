@@ -3,14 +3,13 @@ main: code.op.Main
 version: 0.3
 description: Carbyne weapons and armors.
 author: Dolphindalt
+depend: [ScoreboardAPI]
 softdepend: [Towny]
 commands:
     cg:
         description: Main command. Stands for Carbyne Gear.
-    party:
-        description: Party commands.
-    duel:
-        description: Duel commands.
+    sb:
+        description: Scoreboard commands.
 permisions:
     carbyne.admin:
         description: Admin permissions for the entire plugin.

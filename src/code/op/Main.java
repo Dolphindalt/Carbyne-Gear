@@ -13,14 +13,17 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import SB.ScoreboardManager;
+
 import com.palmergames.bukkit.towny.Towny;
 
 import code.op.gear.CarbyneListener;
 import code.op.gear.GearCommands;
 import code.op.gear.GearHandler;
 import code.op.misc.DamageListener;
-import code.op.sb.CGScoreboard;
-import code.op.sb.ScoreboardRunner;
+import code.op.sb.ScoreboardCommands;
+import code.op.sb.ScoreboardJoinListener;
+import code.op.sb.ScoreboardUpdater;
 
 /*
  *  Credit to Frodenkvist for the firstRun and copy methods.
@@ -39,6 +42,9 @@ public class Main extends JavaPlugin {
 	public FileConfiguration gearData;
 	public FileConfiguration storeData;
 	
+	public static Plugin sbplugin;
+	public static ScoreboardManager sbm;
+	
 	public static Plugin townyPlugin;
 	public static Towny towny;
 	public static boolean townyEnabled = false;
@@ -55,6 +61,9 @@ public class Main extends JavaPlugin {
 			towny = (Towny) townyPlugin;
 			townyEnabled = true;
 		}
+		
+		sbplugin = pm.getPlugin("ScoreboardAPI");
+		sbm = (ScoreboardManager) sbplugin;
 		
 		gearconfigFile = new File(getDataFolder(), "gearconfig.yml");
 		storeFile = new File(getDataFolder(), "store.yml");
@@ -84,17 +93,19 @@ public class Main extends JavaPlugin {
 	
 	//Registers
 	private void registerTasks() {
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new ScoreboardRunner(new CGScoreboard(this, cpm)), 20, 20);
+		this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new ScoreboardUpdater(), 1, 5);
 	}
 	
 	private void registerEvents(PluginManager pm) {
 		pm.registerEvents(new CarbyneListener(this), this);
 		pm.registerEvents(new CPListeners(this), this);
 		if (townyEnabled) pm.registerEvents(new DamageListener(), this);
+		pm.registerEvents(new ScoreboardJoinListener(), this);
 	}
 	
 	private void registerCommands() {
 		this.getCommand("cg").setExecutor(new GearCommands());
+		this.getCommand("sb").setExecutor(new ScoreboardCommands());
 	}
 	
 	//File methods

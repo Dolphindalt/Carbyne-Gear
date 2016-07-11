@@ -116,7 +116,7 @@ public class GearHandler {
 		}
 		
 		/**
-		 * This section loads the minecraft armor defaults, it exludes chain because it is not craftable
+		 * This section loads the minecraft armor defaults
 		 */
 		ConfigurationSection cs = fc.getConfigurationSection("MinecraftArmor");
 		for(String material : cs.getKeys(false)) {
@@ -143,7 +143,30 @@ public class GearHandler {
 				} else Main.instance.logger.log(Level.SEVERE, "[CarbyneGear]: MinecraftArmor configuration has falied to load " + cs + "." + type + "!");
 			}
 		}
-		Main.instance.logger.info(MinecraftArmor.defaultArmors.toString());
+		
+		cs = fc.getConfigurationSection("MinecraftWeapons");
+		for (String material : cs.getKeys(false)) {
+			String type = new String();
+			for(int i = 0; i < 4; i++) {
+				switch(i) {
+				case 0:
+					type = "Sword";
+					break;
+				case 1:
+					type = "Axe";
+					break;
+				case 2:
+					type = "Hoe";
+					break;
+				}
+				CarbyneGear mw = new MinecraftWeapons();
+				if(mw.load(cs.getConfigurationSection(material), type, null)) {
+					MinecraftWeapons.weapons.put(mw.getItem().getType(), mw.getItem());
+					
+				} else Main.instance.logger.log(Level.SEVERE, "[CarbyneGear]: MinecraftWeapons configuration has falied to load " + cs + "." + type + "!");
+			}
+		}
+		
 		Collections.sort(gear, new CarbyneGearComparator());
 		
 		//Sort out hiddens into new list
@@ -207,6 +230,7 @@ public class GearHandler {
 	
 	public static CarbyneWeapon getCarbyneWeapon(ItemStack is) {
 		if (is.getItemMeta() == null) return null;
+		if (is.getItemMeta().getDisplayName() == null) return null;
 		List<String> lore = is.getItemMeta().getLore();
 		if(lore == null || lore.isEmpty()) return null;
 		for (CarbyneGear cg : gear) {

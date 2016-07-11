@@ -584,6 +584,8 @@ MinecraftArmor:
         Boots:
             Durability: 950
             ArmorRating: 2.0
+        Sword:
+            
     Iron:
         Helmet:
             Durability: 1000
@@ -610,3 +612,53 @@ MinecraftArmor:
         Boots:
             Durability: 950
             ArmorRating: 1.0
+    Chainmail:
+        Helmet:
+            Durability: 1000
+            ArmorRating: 1.0
+        Chestplate:
+            Durability: 1200
+            ArmorRating: 1.0
+        Leggings:
+            Durability: 1100
+            ArmorRating: 1.0
+        Boots:
+            Durability: 950
+            ArmorRating: 1.0
+#
+MinecraftWeapons:
+    Diamond:
+        Sword:
+            Durability: 1200
+        Axe:
+            Durability: 1000
+        Hoe:
+            Durability: 1600
+    Stone:
+        Sword:
+            Durability: 220
+        Axe:
+            Durability: 200
+        Hoe:
+            Durability: 300
+    Iron:
+        Sword:
+            Durability: 600
+        Axe:
+            Durability: 500
+        Hoe:
+            Durability: 800
+    Gold:
+        Sword:
+            Durability: 500
+        Axe:
+            Durability: 400
+        Hoe:
+            Durability: 700
+    Wood:
+        Sword:
+            Durability: 75
+        Axe:
+            Durability: 65
+        Hoe:
+            Durability: 85

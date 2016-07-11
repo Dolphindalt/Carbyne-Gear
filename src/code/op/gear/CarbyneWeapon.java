@@ -15,7 +15,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
+import com.palmergames.bukkit.towny.object.TownyUniverse;
+
 import code.op.CarbynePlayer;
+import code.op.Main;
 import code.op.skill.Special;
 import code.op.skill.SpecialInstances;
 import code.op.utils.HiddenStringUtils;
@@ -246,6 +250,13 @@ public class CarbyneWeapon extends CarbyneGear {
 	
 	public boolean useSpecial(CarbyneWeapon cw, CarbynePlayer p) {
 		if(special == null) return false;
+		if(Main.townyEnabled) {
+			try {
+				if (!TownyUniverse.getTownBlock(p.getP().getLocation()).getPermissions().pvp || !TownyUniverse.getTownBlock(p.getP().getLocation()).getTown().isPVP()) return false;
+			} catch (NotRegisteredException e1) {
+				return false;
+			}
+		}
 		if(getSpecialCost() == -1) return false;
 		if(cw.getSpecialCharges() < this.getSpecialCost()) return false;
 		if(!special.run(p.getP())) return false;

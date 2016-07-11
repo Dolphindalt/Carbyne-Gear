@@ -12,21 +12,18 @@ import org.bukkit.inventory.ItemStack;
 import code.op.utils.HiddenStringUtils;
 import code.op.utils.Namer;
 
-public class MinecraftArmor extends CarbyneGear {
+public class MinecraftWeapons extends CarbyneGear {
 
-	public static HashMap<Material,ItemStack> defaultArmors = new HashMap<Material,ItemStack>();
+	public static HashMap<Material, ItemStack> weapons = new HashMap<Material, ItemStack>();
 	
 	private String material = null;
-	private double armorRating = -1;
 	
 	@Override
 	public boolean load(ConfigurationSection cs, String type, Color color) {
 		material = cs.getName();
 		if((this.type = type) == null) return false;
 		if((durability = cs.getInt(type + ".Durability")) == -1) return false;
-		if((armorRating = cs.getDouble(type + ".ArmorRating")) == -1) return false;
 		this.lore = new ArrayList<String>();
-		this.lore.add(0, "Armor Rating: " + armorRating);
 		this.lore.add(0, ChatColor.RED + "Durability: " + cs.getInt(type + ".Durability"));
 		this.lore.add(0, HiddenStringUtils.encodeString(code));
 
@@ -40,5 +37,7 @@ public class MinecraftArmor extends CarbyneGear {
 		
 		return is;
 	}
+
+	
 	
 }

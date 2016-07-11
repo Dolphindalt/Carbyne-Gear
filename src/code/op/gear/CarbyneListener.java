@@ -1,5 +1,6 @@
 package code.op.gear;
 
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
 import org.bukkit.ChatColor;
@@ -16,11 +17,13 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scoreboard.DisplaySlot;
 
+import SB.SMHandler;
+import SB.SMPlayer;
 import code.op.CPManager;
 import code.op.Main;
 import code.op.utils.Namer;
@@ -36,16 +39,24 @@ public class CarbyneListener implements Listener {
 		this.cpm = plugin.getCpm();
 	}
 	
-	@EventHandler(priority = EventPriority.NORMAL)
-	public void onDamage(EntityDamageEvent e, EntityDamageByEntityEvent ee) {
-		if (ee.isCancelled()) return;
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
+	public void onDamage(EntityDamageEvent e) {
+		if (e.isCancelled()) return;
 		if (e.getEntity() instanceof Player) {
 			Player p = (Player) e.getEntity();
+			if (p.isDead()) {
+				e.setCancelled(true);
+				return;
+			}
 			double ap = 0;
 			for (ItemStack is : p.getInventory().getArmorContents()) {
 				if (is.getType().equals(Material.AIR)) continue;
 				try {
+					try {
 					ap = ap + Double.parseDouble(is.getItemMeta().getLore().get(2).split("\\s+")[2]);
+					} catch (ArrayIndexOutOfBoundsException ex) {
+						return;
+					}
 				} catch (NullPointerException ex) {
 					// If this gets called, the armor is invalid.
 				}
@@ -55,6 +66,7 @@ public class CarbyneListener implements Listener {
 				d = (e.getDamage() - (e.getDamage()*ap) - (e.getOriginalDamage(DamageModifier.RESISTANCE)*-1));
 			if (d >= p.getHealth()) {
 				p.setHealth(0);
+				p.damage(d);
 				return;
 			}
 			if (p.isBlocking()) {
@@ -68,14 +80,17 @@ public class CarbyneListener implements Listener {
 		}
 	}
 	
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void onEntityDamagebyEntity(EntityDamageByEntityEvent e) {
 		if (e.getEntity() instanceof Player) {
 			Player attacked = (Player) e.getEntity();
 			for(ItemStack is : attacked.getInventory().getArmorContents()) {
 				//Update health
-				if (cpm.containsPlayer(attacked)) {
-					cpm.getCPByName(attacked.getName()).getObj().getScore("Health").setScore((int) attacked.getHealth());
+				if (SMHandler.getPlayer(attacked) != null) {
+					SMPlayer pl = SMHandler.getPlayer(attacked);
+					pl.updateLine(5, ChatColor.GREEN + "Health: " + Math.floor(attacked.getPlayer().getHealth()) + " / " + attacked.getPlayer().getMaxHealth());
+					pl.sendScoreboard();
+					//cpm.getCPByName(attacked.getName()).getObj().getScore("Health").setScore((int) attacked.getHealth());
 				}
 				//Apply effects
 				if (is.getType().equals(Material.LEATHER_CHESTPLATE)) {
@@ -99,9 +114,18 @@ public class CarbyneListener implements Listener {
 					old.remove(1);
 					old.add(1, ChatColor.RED + "Durability: " + durability);
 					Namer.setLore(is, old);
-					cpm.getCPByName(attacked.getName()).getBoard().getObjective(DisplaySlot.SIDEBAR).getScore(parseArmorType(is.getType())).setScore((int) durability);
+					//cpm.getCPByName(attacked.getName()).getBoard().getObjective(DisplaySlot.SIDEBAR).getScore(parseArmorType(is.getType())).setScore((int) durability);
+					String type = is.getType().toString().split("\\s+")[1].toLowerCase();
+					SMPlayer pl = SMHandler.getPlayer(attacked);
+					pl.updateLine(parseArmorType(is.getType()), ChatColor.RED + type.substring(0, 1).toUpperCase() + ": " + (int)durability);
+					pl.sendScoreboard();
 				} else {
-					cpm.getCPByName(attacked.getName()).getBoard().getObjective(DisplaySlot.SIDEBAR).getScore(parseArmorType(is.getType())).setScore((int) durability);
+					//cpm.getCPByName(attacked.getName()).getBoard().getObjective(DisplaySlot.SIDEBAR).getScore(parseArmorType(is.getType())).setScore((int) durability);
+					String type = is.getType().toString().split("\\s+")[1].toLowerCase();
+					SMPlayer pl = SMHandler.getPlayer(attacked);
+					pl.updateLine(parseArmorType(is.getType()), ChatColor.RED + type.substring(0, 1).toUpperCase() + ": " + (int)durability);
+					pl.sendScoreboard();
+					is.setDurability(is.getType().getMaxDurability());
 					attacked.getInventory().remove(is);
 					attacked.playSound(attacked.getLocation(), Sound.ITEM_BREAK, 1, 1);
 				}
@@ -130,8 +154,29 @@ public class CarbyneListener implements Listener {
 					old.add(1, ChatColor.RED + "Durability: " + durability);
 					Namer.setLore(is, old);
 				} else {
+					is.setDurability(is.getType().getMaxDurability());
 					damager.getInventory().remove(is);
 					damager.playSound(damager.getLocation(), Sound.ITEM_BREAK, 1, 1);
+				}
+				SMHandler.getPlayer(damager).updateLine(0, ChatColor.YELLOW + "Hand: " + durability);
+			} else {
+				try {
+					double durability = GearHandler.getDurability(is);
+					if(!(durability == 0)) {
+						is.setDurability((short) 0);
+						durability--;
+						List<String> old = is.getItemMeta().getLore();
+						old.remove(1);
+						old.add(1, ChatColor.RED + "Durability: " + durability);
+						Namer.setLore(is, old);
+					} else {
+						is.setDurability(is.getType().getMaxDurability());
+						damager.getInventory().remove(is);
+						damager.playSound(damager.getLocation(), Sound.ITEM_BREAK, 1, 1);
+					}
+					SMHandler.getPlayer(damager).updateLine(0, ChatColor.YELLOW + "Hand: " + durability);
+				} catch (NullPointerException exx) {
+					SMHandler.getPlayer(damager).updateLine(0, ChatColor.YELLOW + "Hand: " + 0);
 				}
 			}
 		}
@@ -165,20 +210,19 @@ public class CarbyneListener implements Listener {
 		LivingEntity le = e.getEntity();
 		if (le.getKiller() instanceof Player) {
 			ItemStack is = le.getKiller().getItemInHand();
-			if (GearHandler.isCarbyneWeapon(is)) {
-				CarbyneWeapon cw = GearHandler.getCarbyneWeapon(is);
-				String[] chargeLine = is.getItemMeta().getLore().get(2).split("\\s+");
-				int am = Integer.parseInt(chargeLine[1]);
-				if (am == cw.getSpecialCost()) return;
-				am++;
-				Namer.setLore(is, "Charge: " + am + " / " + cw.getSpecialCost(), 2);
-				cw.setSpecialCharges(am);
+			try {
+				if (GearHandler.isCarbyneWeapon(is)) {
+					CarbyneWeapon cw = GearHandler.getCarbyneWeapon(is);
+					String[] chargeLine = is.getItemMeta().getLore().get(2).split("\\s+");
+					int am = Integer.parseInt(chargeLine[1]);
+					if (am == cw.getSpecialCost()) return;
+					am++;
+					Namer.setLore(is, "Charge: " + am + " / " + cw.getSpecialCost(), 2);
+					cw.setSpecialCharges(am);
+				}
+			} catch (NullPointerException ex) {
+				//Is not Caebyne Weapon
 			}
-			/*if (cpm.containsPlayer(killer)) {
-				CarbynePlayer kp = cpm.getCPByName(killer.getName());
-				if(kp.getSpecialCount() == 50) return;
-				kp.setSpecialCount(kp.getSpecialCount() + 1);
-			}*/
 		}
 	}
 	
@@ -190,12 +234,30 @@ public class CarbyneListener implements Listener {
 	@EventHandler
 	public void onCraftItem(CraftItemEvent e) {
 		try {
-			if (MinecraftArmor.defaultArmors.get(e.getCurrentItem().getType()).getType().equals(e.getCurrentItem().getType())) {
-				e.setCurrentItem(MinecraftArmor.defaultArmors.get(e.getCurrentItem().getType()));
-			}
+				if (MinecraftArmor.defaultArmors.get(e.getCurrentItem().getType()).getType().equals(e.getCurrentItem().getType())) {
+					e.setCurrentItem(MinecraftArmor.defaultArmors.get(e.getCurrentItem().getType()));
+				}
 			} catch (NullPointerException ex) {
 				//This will catch if it is not armor
 			}
+	}
+	
+	@EventHandler
+	public void onClick(InventoryClickEvent e) {
+		try {
+		if (MinecraftArmor.defaultArmors.get(e.getCurrentItem().getType()).getType().equals(e.getCurrentItem().getType()) && !e.getCurrentItem().getItemMeta().hasLore()) {
+			e.setCurrentItem(MinecraftArmor.defaultArmors.get(e.getCurrentItem().getType()));
+		}
+		} catch (NullPointerException ex) {
+			
+		}
+		try {
+		if (MinecraftWeapons.weapons.get(e.getCurrentItem().getType()).getType().equals(e.getCurrentItem().getType()) && !e.getCurrentItem().getItemMeta().hasLore()) {
+			e.setCurrentItem(MinecraftWeapons.weapons.get(e.getCurrentItem().getType()));
+		}
+		} catch (NullPointerException ex) {
+			
+		}
 	}
 	
 	/**
@@ -204,6 +266,8 @@ public class CarbyneListener implements Listener {
 	 */
 	@EventHandler
 	public void onInventoryClose(InventoryCloseEvent e) {
+		SMPlayer pl = SMHandler.getPlayer((Player) e.getPlayer());
+		try {
 		double[] a = {0,0,0,0};
 		ItemStack[] ac = e.getPlayer().getInventory().getArmorContents();
 		for(int i = 0; i < 4; i++) {
@@ -215,19 +279,33 @@ public class CarbyneListener implements Listener {
 			}
 			continue;
 		}
-		cpm.getCPByName(e.getPlayer().getName()).updateArmorDurability(a[0], a[1], a[2], a[3]);
+		//cpm.getCPByName(e.getPlayer().getName()).updateArmorDurability(a[0], a[1], a[2], a[3]);
+		pl.updateLine(4, ChatColor.GOLD + "Helmet: " + a[3]);
+		pl.updateLine(3, ChatColor.GOLD + "Chestplate: " + a[2]);
+		pl.updateLine(2, ChatColor.GOLD + "Leggings: " + a[1]);
+		pl.updateLine(1, ChatColor.GOLD + "Boots: " + a[0]);
+		} catch(NullPointerException | ConcurrentModificationException exx) {
+			
+		}
+		try {
+			ItemStack is = e.getPlayer().getItemInHand();
+			pl.updateLine(0, ChatColor.YELLOW + "Hand: " + GearHandler.getDurability(is));
+		} catch(NullPointerException | ConcurrentModificationException exx) {
+			
+		}
+		pl.sendScoreboard();
 	}
 	
-	public String parseArmorType(Material material) {
+	public int parseArmorType(Material material) {
 		if(material.toString().contains("HELMET")) {
-			return "Helmet";
+			return 4;
 		} else if(material.toString().contains("CHESTPLATE")) {
-			return "Chestplate";
+			return 3;
 		} else if(material.toString().contains("LEGGINGS")) {
-			return "Leggings";
+			return 2;
 		} else if (material.toString().contains("BOOTS")) {
-			return "Boots";
-		} else return null;
+			return 1;
+		} else return -1;
 	}
 	
 }
