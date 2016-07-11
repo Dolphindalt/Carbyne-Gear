@@ -290,7 +290,7 @@ public class CarbyneListener implements Listener {
 		try {
 			ItemStack is = e.getPlayer().getItemInHand();
 			pl.updateLine(0, ChatColor.YELLOW + "Hand: " + GearHandler.getDurability(is));
-		} catch(NullPointerException | ConcurrentModificationException exx) {
+		} catch(NullPointerException | ConcurrentModificationException | ArrayIndexOutOfBoundsException exx) {
 			
 		}
 		pl.sendScoreboard();
