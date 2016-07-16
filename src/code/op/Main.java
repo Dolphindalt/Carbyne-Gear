@@ -24,6 +24,7 @@ import code.op.misc.DamageListener;
 import code.op.sb.ScoreboardCommands;
 import code.op.sb.ScoreboardJoinListener;
 import code.op.sb.ScoreboardUpdater;
+import code.op.skill.crehop.CrehopListener;
 
 /*
  *  Credit to Frodenkvist for the firstRun and copy methods.
@@ -101,6 +102,7 @@ public class Main extends JavaPlugin {
 		pm.registerEvents(new CPListeners(this), this);
 		if (townyEnabled) pm.registerEvents(new DamageListener(), this);
 		pm.registerEvents(new ScoreboardJoinListener(), this);
+		pm.registerEvents(new CrehopListener(), this);
 	}
 	
 	private void registerCommands() {
