@@ -14,6 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
@@ -42,6 +43,10 @@ public class CarbyneListener implements Listener {
 	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
 	public void onDamage(EntityDamageEvent e) {
 		if (e.isCancelled()) return;
+		if (e.getCause().equals(DamageCause.FALL)) {
+			e.setCancelled(true);
+			return;
+		}
 		if (e.getEntity() instanceof Player) {
 			Player p = (Player) e.getEntity();
 			if (p.isDead()) {
@@ -107,27 +112,31 @@ public class CarbyneListener implements Listener {
 				CarbyneGear cg = GearHandler.getCarbyneGear(is);
 				if(cg == null) continue;
 				double durability = GearHandler.getDurability(is);
-				if(!(durability == 0)) {
-					is.setDurability((short) 0);
-					durability--;
-					List<String> old = is.getItemMeta().getLore();
-					old.remove(1);
-					old.add(1, ChatColor.RED + "Durability: " + durability);
-					Namer.setLore(is, old);
-					//cpm.getCPByName(attacked.getName()).getBoard().getObjective(DisplaySlot.SIDEBAR).getScore(parseArmorType(is.getType())).setScore((int) durability);
-					String type = is.getType().toString().split("\\s+")[1].toLowerCase();
-					SMPlayer pl = SMHandler.getPlayer(attacked);
-					pl.updateLine(parseArmorType(is.getType()), ChatColor.RED + type.substring(0, 1).toUpperCase() + ": " + (int)durability);
-					pl.sendScoreboard();
-				} else {
-					//cpm.getCPByName(attacked.getName()).getBoard().getObjective(DisplaySlot.SIDEBAR).getScore(parseArmorType(is.getType())).setScore((int) durability);
-					String type = is.getType().toString().split("\\s+")[1].toLowerCase();
-					SMPlayer pl = SMHandler.getPlayer(attacked);
-					pl.updateLine(parseArmorType(is.getType()), ChatColor.RED + type.substring(0, 1).toUpperCase() + ": " + (int)durability);
-					pl.sendScoreboard();
-					is.setDurability(is.getType().getMaxDurability());
-					attacked.getInventory().remove(is);
-					attacked.playSound(attacked.getLocation(), Sound.ITEM_BREAK, 1, 1);
+				if (durability != -1) {
+					try {
+						if(!(durability == 0)) {
+							is.setDurability((short) 0);
+							durability--;
+							List<String> old = is.getItemMeta().getLore();
+							old.remove(1);
+							old.add(1, ChatColor.RED + "Durability: " + durability);
+							Namer.setLore(is, old);
+							//cpm.getCPByName(attacked.getName()).getBoard().getObjective(DisplaySlot.SIDEBAR).getScore(parseArmorType(is.getType())).setScore((int) durability);
+							String type = is.getType().toString().split("\\s+")[1].toLowerCase();
+							SMPlayer pl = SMHandler.getPlayer(attacked);
+							pl.updateLine(parseArmorType(is.getType()), ChatColor.RED + type.substring(0, 1).toUpperCase() + ": " + (int)durability);
+							pl.sendScoreboard();
+						} else {
+							//cpm.getCPByName(attacked.getName()).getBoard().getObjective(DisplaySlot.SIDEBAR).getScore(parseArmorType(is.getType())).setScore((int) durability);
+							String type = is.getType().toString().split("\\s+")[1].toLowerCase();
+							SMPlayer pl = SMHandler.getPlayer(attacked);
+							pl.updateLine(parseArmorType(is.getType()), ChatColor.RED + type.substring(0, 1).toUpperCase() + ": " + (int)durability);
+							pl.sendScoreboard();
+							is.setDurability(is.getType().getMaxDurability());
+							attacked.getInventory().remove(is);
+							attacked.playSound(attacked.getLocation(), Sound.ITEM_BREAK, 1, 1);
+						}
+					} catch (Exception ex) {}
 				}
 			}
 		}
@@ -146,22 +155,7 @@ public class CarbyneListener implements Listener {
 				}
 				//Lower weapons durability after attack
 				double durability = GearHandler.getDurability(is);
-				if(!(durability == 0)) {
-					is.setDurability((short) 0);
-					durability--;
-					List<String> old = is.getItemMeta().getLore();
-					old.remove(1);
-					old.add(1, ChatColor.RED + "Durability: " + durability);
-					Namer.setLore(is, old);
-				} else {
-					is.setDurability(is.getType().getMaxDurability());
-					damager.getInventory().remove(is);
-					damager.playSound(damager.getLocation(), Sound.ITEM_BREAK, 1, 1);
-				}
-				SMHandler.getPlayer(damager).updateLine(0, ChatColor.YELLOW + "Hand: " + durability);
-			} else {
-				try {
-					double durability = GearHandler.getDurability(is);
+				if (durability != -1) {
 					if(!(durability == 0)) {
 						is.setDurability((short) 0);
 						durability--;
@@ -175,6 +169,25 @@ public class CarbyneListener implements Listener {
 						damager.playSound(damager.getLocation(), Sound.ITEM_BREAK, 1, 1);
 					}
 					SMHandler.getPlayer(damager).updateLine(0, ChatColor.YELLOW + "Hand: " + durability);
+				}
+			} else {
+				try {
+					double durability = GearHandler.getDurability(is);
+					if (durability != -1) {
+						if(!(durability == 0)) {
+							is.setDurability((short) 0);
+							durability--;
+							List<String> old = is.getItemMeta().getLore();
+							old.remove(1);
+							old.add(1, ChatColor.RED + "Durability: " + durability);
+							Namer.setLore(is, old);
+						} else {
+							is.setDurability(is.getType().getMaxDurability());
+							damager.getInventory().remove(is);
+							damager.playSound(damager.getLocation(), Sound.ITEM_BREAK, 1, 1);
+						}
+						SMHandler.getPlayer(damager).updateLine(0, ChatColor.YELLOW + "Hand: " + durability);
+					}
 				} catch (NullPointerException exx) {
 					SMHandler.getPlayer(damager).updateLine(0, ChatColor.YELLOW + "Hand: " + 0);
 				}
@@ -289,7 +302,10 @@ public class CarbyneListener implements Listener {
 		}
 		try {
 			ItemStack is = e.getPlayer().getItemInHand();
-			pl.updateLine(0, ChatColor.YELLOW + "Hand: " + GearHandler.getDurability(is));
+			double dur;
+			if ((dur = GearHandler.getDurability(is)) != -1) {
+			pl.updateLine(0, ChatColor.YELLOW + "Hand: " + dur);
+			}
 		} catch(NullPointerException | ConcurrentModificationException | ArrayIndexOutOfBoundsException exx) {
 			
 		}

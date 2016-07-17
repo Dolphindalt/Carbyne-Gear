@@ -206,11 +206,15 @@ public class GearHandler {
 	
 	public static double getDurability(ItemStack is)
 	{
+		try {
 		String key = Namer.getLore(is).get(1);
 		if(key.contains("Durability:")) {
 			return Double.valueOf(key.split(" ")[1]);
 		}
 		return -1;
+		} catch (Exception ez) {
+			return -1;
+		}
 	}
 
 	public static CarbyneArmor getCarbyneArmor(ItemStack is) {
