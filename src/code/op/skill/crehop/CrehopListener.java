@@ -7,6 +7,7 @@ import org.bukkit.event.player.PlayerToggleFlightEvent;
 public class CrehopListener implements Listener {
 
 	public void onFlightToggle(PlayerToggleFlightEvent e) {
+		System.out.println("Triggered!");
 		if (e.getPlayer().getLocation().getWorld().getName().equalsIgnoreCase("world")) {
 			
 			if (e.getPlayer().getGameMode().equals(GameMode.SURVIVAL)) {

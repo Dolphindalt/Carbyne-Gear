@@ -56,14 +56,9 @@ public class CarbyneListener implements Listener {
 			double ap = 0;
 			for (ItemStack is : p.getInventory().getArmorContents()) {
 				if (is.getType().equals(Material.AIR)) continue;
-				try {
 					try {
-					ap = ap + Double.parseDouble(is.getItemMeta().getLore().get(2).split("\\s+")[2]);
-					} catch (ArrayIndexOutOfBoundsException ex) {
-						return;
-					}
-				} catch (NullPointerException ex) {
-					// If this gets called, the armor is invalid.
+						ap = ap + Double.parseDouble(is.getItemMeta().getLore().get(2).split("\\s+")[2]);
+					} catch (NullPointerException | ArrayIndexOutOfBoundsException ex) {
 				}
 			}
 			if (ap != 0) {
@@ -74,12 +69,7 @@ public class CarbyneListener implements Listener {
 				p.damage(d);
 				return;
 			}
-			if (p.isBlocking()) {
 			p.damage(d);
-			} else {
-				d = 0.32/d;
-				p.damage(d);
-			}
 			e.setDamage(0);
 			}
 		}
@@ -292,6 +282,11 @@ public class CarbyneListener implements Listener {
 			}
 			continue;
 		}
+		if (ac[0].getItemMeta().getDisplayName().equalsIgnoreCase(ac[1].getItemMeta().getDisplayName()) &&
+				ac[0].getItemMeta().getDisplayName().equalsIgnoreCase(ac[2].getItemMeta().getDisplayName()) &&
+				ac[0].getItemMeta().getDisplayName().equalsIgnoreCase(ac[3].getItemMeta().getDisplayName())) {
+			EffectsTask.addPlayer((Player) e.getPlayer());
+		} else { EffectsTask.removePlayer((Player) e.getPlayer()); }
 		//cpm.getCPByName(e.getPlayer().getName()).updateArmorDurability(a[0], a[1], a[2], a[3]);
 		pl.updateLine(4, ChatColor.GOLD + "Helmet: " + a[3]);
 		pl.updateLine(3, ChatColor.GOLD + "Chestplate: " + a[2]);

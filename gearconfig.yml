@@ -574,57 +574,57 @@ MinecraftArmor:
     Diamond:
         Helmet:
             Durability: 1000
-            ArmorRating: 2.0
+            ArmorRating: 0.20
         Chestplate:
             Durability: 1200
-            ArmorRating: 2.0
+            ArmorRating: 0.20
         Leggings:
             Durability: 1100
-            ArmorRating: 2.0
+            ArmorRating: 0.20
         Boots:
             Durability: 950
-            ArmorRating: 2.0
+            ArmorRating: 0.20
         Sword:
             
     Iron:
         Helmet:
             Durability: 1000
-            ArmorRating: 1.0
+            ArmorRating: 0.10
         Chestplate:
             Durability: 1200
-            ArmorRating: 1.0
+            ArmorRating: 0.10
         Leggings:
             Durability: 1100
-            ArmorRating: 1.0
+            ArmorRating: 0.10
         Boots:
             Durability: 950
-            ArmorRating: 1.0
+            ArmorRating: 0.10
     Gold:
         Helmet:
             Durability: 1000
-            ArmorRating: 1.0
+            ArmorRating: 0.10
         Chestplate:
             Durability: 1200
-            ArmorRating: 1.0
+            ArmorRating: 0.10
         Leggings:
             Durability: 1100
-            ArmorRating: 1.0
+            ArmorRating: 0.10
         Boots:
             Durability: 950
-            ArmorRating: 1.0
+            ArmorRating: 0.10
     Chainmail:
         Helmet:
             Durability: 1000
-            ArmorRating: 1.0
+            ArmorRating: 0.10
         Chestplate:
             Durability: 1200
-            ArmorRating: 1.0
+            ArmorRating: 0.10
         Leggings:
             Durability: 1100
-            ArmorRating: 1.0
+            ArmorRating: 0.10
         Boots:
             Durability: 950
-            ArmorRating: 1.0
+            ArmorRating: 0.10
 #
 MinecraftWeapons:
     Diamond:

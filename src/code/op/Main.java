@@ -18,6 +18,7 @@ import SB.ScoreboardManager;
 import com.palmergames.bukkit.towny.Towny;
 
 import code.op.gear.CarbyneListener;
+import code.op.gear.EffectsTask;
 import code.op.gear.GearCommands;
 import code.op.gear.GearHandler;
 import code.op.misc.DamageListener;
@@ -95,6 +96,7 @@ public class Main extends JavaPlugin {
 	//Registers
 	private void registerTasks() {
 		this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new ScoreboardUpdater(), 1, 5);
+		this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new EffectsTask(), 1L, 20L);
 	}
 	
 	private void registerEvents(PluginManager pm) {
