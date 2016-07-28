@@ -7,8 +7,6 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import code.op.utils.ParticleEffect;
-
 public class SuperJump {
 	public static void Jump(Player player,double d){
 		String doubleJump = "DOUBLE JUMP!";
@@ -31,7 +29,6 @@ public class SuperJump {
 				lplayer.playSound(lplayer.getLocation(), Sound.HORSE_JUMP, 3.0F, 0.533F);
 			}
 		}
-		ParticleEffect.ITEM_CRACK.display(0, 1, 0, 1, 10, player.getLocation(), 300);
 
 		player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + doubleJump);
 	}

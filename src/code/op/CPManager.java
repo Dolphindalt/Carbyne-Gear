@@ -1,11 +1,12 @@
 package code.op;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.bukkit.entity.Player;
 
-public class CPManager {
+public class CPManager implements Runnable {
 
 	private List<CarbynePlayer> players;
 	
@@ -38,6 +39,15 @@ public class CPManager {
 		return false;
 	}
 	
+	public CarbynePlayer getPlayer(Player player) {
+		for (CarbynePlayer s : players) {
+			if (player.equals(s.getP())) {
+				return s;
+			}
+		}
+		return null;
+	}
+	
 	public CarbynePlayer getCPByName(String name) {
 		for (CarbynePlayer s : players) {
 			if(s.getName().equalsIgnoreCase(name)) {
@@ -45,6 +55,13 @@ public class CPManager {
 			}
 		}
 		return null;
+	}
+
+	public void run() {
+		Iterator<CarbynePlayer> itr = players.iterator();
+		while (itr.hasNext()) {
+			itr.next().tick();
+		}
 	}
 	
 }

@@ -83,6 +83,7 @@ public class Main extends JavaPlugin {
 		gh = new GearHandler();
 		
 		cpm = new CPManager();
+		this.getServer().getScheduler().scheduleSyncRepeatingTask(this, cpm, 1L, 20L);
 		
 		registerCommands();
 		registerEvents(pm);
@@ -104,7 +105,7 @@ public class Main extends JavaPlugin {
 		pm.registerEvents(new CPListeners(this), this);
 		if (townyEnabled) pm.registerEvents(new DamageListener(), this);
 		pm.registerEvents(new ScoreboardJoinListener(), this);
-		pm.registerEvents(new CrehopListener(), this);
+		pm.registerEvents(new CrehopListener(cpm), this);
 	}
 	
 	private void registerCommands() {
