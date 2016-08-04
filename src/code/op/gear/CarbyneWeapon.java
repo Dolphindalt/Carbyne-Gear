@@ -278,6 +278,8 @@ public class CarbyneWeapon extends CarbyneGear {
 			return SpecialInstances.getShadowSweep();
 		} else if (skillName.equalsIgnoreCase("SummonHealing")) {
 			return SpecialInstances.getSummonHealing();
+		} else if (skillName.equalsIgnoreCase("FireStorm")) {
+			return SpecialInstances.getFirestorm();
 		}
 		return null;
 	}

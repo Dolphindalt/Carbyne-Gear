@@ -14,6 +14,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import SB.ScoreboardManager;
+import boss.BossPlugin;
 
 import com.palmergames.bukkit.towny.Towny;
 
@@ -51,6 +52,10 @@ public class Main extends JavaPlugin {
 	public static Towny towny;
 	public static boolean townyEnabled = false;
 	
+	public static Plugin bossPlugin;
+	public static BossPlugin boss;
+	public static boolean bossEnabled = false;
+	
 	private CPManager cpm;
 	private GearHandler gh;
 	
@@ -62,6 +67,12 @@ public class Main extends JavaPlugin {
 			townyPlugin = pm.getPlugin("Towny");
 			towny = (Towny) townyPlugin;
 			townyEnabled = true;
+		}
+		
+		if (pm.isPluginEnabled("Boss-Library")) {
+			bossPlugin = pm.getPlugin("Boss-Library");
+			boss = (BossPlugin) bossPlugin;
+			bossEnabled = true;
 		}
 		
 		sbplugin = pm.getPlugin("ScoreboardAPI");
