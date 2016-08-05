@@ -374,15 +374,40 @@ public class ShadowSweep extends Special {
         		if(((Player)en).equals(caster))
         			continue;
         	}
-        	LivingEntity le = (LivingEntity)en;   
-            le.setHealth(le.getHealth() - (le.getHealth()/10));
-            le.damage(0f);
-            le.addPotionEffect(pot);
+        	LivingEntity le = (LivingEntity)en;
+        	
+        	Location loc = le.getLocation();
+        	
+        	if(center.getBlockX()+radius-loc.getBlockX() >= 0 && center.getBlockX()+radius-loc.getBlockX() < radius*2)
+        	{
+	        		if(center.getBlockZ()+radius-loc.getBlockZ() >= 0 && center.getBlockZ()+radius-loc.getBlockZ() < radius*2)
+	            	{
+	        			if(center.getBlockY()+height-loc.getBlockY() < center.getBlockY()+height)
+	                	{
+	                		if(lengthSq((center.getBlockX()+radius-loc.getBlockX() + 1)*7, (center.getBlockZ()+radius-loc.getBlockZ() + 1)*15) <= 1)
+	                		{
+	                			center.getWorld().strikeLightningEffect(le.getLocation());
+	                			if(le instanceof Player)
+	                				le.setHealth(le.getHealth()/4);
+	                			else
+	                				le.setHealth(le.getHealth()/4);
+	                			le.setFireTicks(20*6);
+	                            le.addPotionEffect(pot);
+	                			le.damage(0f);
+	                		}
+	                	}
+	            	}
+	        	}
         }
 	}
 	
 	public String getName() {
 		return "ShadowSweep";
 	}
+	
+	private final double lengthSq(double x, double z)
+    {
+        return (x * x) + (z * z);
+    }
 	
 }
