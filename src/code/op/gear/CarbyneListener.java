@@ -6,6 +6,7 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,6 +24,8 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+import boss.mob.Mob;
+import boss.mob.MobHandler;
 import SB.SMHandler;
 import SB.SMPlayer;
 import code.op.CPManager;
@@ -83,7 +86,7 @@ public class CarbyneListener implements Listener {
 				//Update health
 				if (SMHandler.getPlayer(attacked) != null) {
 					SMPlayer pl = SMHandler.getPlayer(attacked);
-					pl.updateLine(5, ChatColor.GREEN + "Health: " + Math.floor(attacked.getPlayer().getHealth()) + " / " + attacked.getPlayer().getMaxHealth());
+					pl.updateLine(6, ChatColor.GREEN + "Health: " + Math.floor(attacked.getPlayer().getHealth()) + " / " + attacked.getPlayer().getMaxHealth());
 					pl.sendScoreboard();
 					//cpm.getCPByName(attacked.getName()).getObj().getScore("Health").setScore((int) attacked.getHealth());
 				}
@@ -132,6 +135,19 @@ public class CarbyneListener implements Listener {
 		}
 		if (e.getDamager() instanceof Player) {
 			Player damager = (Player) e.getDamager();
+			
+			if (e.getEntity() instanceof LivingEntity) {
+				Entity ent = e.getEntity();
+				if (ent instanceof Player) {
+					SMHandler.getPlayer(damager).updateLine(0, ChatColor.RED + "Enemy: " + Math.floor((((Player) ent).getHealth())));
+				} else {
+					Mob mob = MobHandler.getMob((LivingEntity) ent);
+					if (mob != null) {
+						SMHandler.getPlayer(damager).updateLine(0, ChatColor.RED + "Enemy: " + Math.floor(mob.getHealth()));
+					} else SMHandler.getPlayer(damager).updateLine(0, ChatColor.RED + "Enemy: " + Math.floor(((LivingEntity) ent).getHealth()));
+				}
+			}
+			
 			ItemStack is = damager.getItemInHand();
 			CarbyneWeapon cw = GearHandler.getCarbyneWeapon(is);
 			if (!(cw == null)) {
@@ -158,7 +174,7 @@ public class CarbyneListener implements Listener {
 						damager.getInventory().remove(is);
 						damager.playSound(damager.getLocation(), Sound.ITEM_BREAK, 1, 1);
 					}
-					SMHandler.getPlayer(damager).updateLine(0, ChatColor.YELLOW + "Hand: " + durability);
+					SMHandler.getPlayer(damager).updateLine(1, ChatColor.YELLOW + "Hand: " + durability);
 				}
 			} else {
 				try {
@@ -176,10 +192,10 @@ public class CarbyneListener implements Listener {
 							damager.getInventory().remove(is);
 							damager.playSound(damager.getLocation(), Sound.ITEM_BREAK, 1, 1);
 						}
-						SMHandler.getPlayer(damager).updateLine(0, ChatColor.YELLOW + "Hand: " + durability);
+						SMHandler.getPlayer(damager).updateLine(1, ChatColor.YELLOW + "Hand: " + durability);
 					}
 				} catch (NullPointerException exx) {
-					SMHandler.getPlayer(damager).updateLine(0, ChatColor.YELLOW + "Hand: " + 0);
+					SMHandler.getPlayer(damager).updateLine(1, ChatColor.YELLOW + "Hand: " + 0);
 				}
 			}
 		}
@@ -288,10 +304,10 @@ public class CarbyneListener implements Listener {
 			EffectsTask.addPlayer((Player) e.getPlayer());
 		} else { EffectsTask.removePlayer((Player) e.getPlayer()); }
 		//cpm.getCPByName(e.getPlayer().getName()).updateArmorDurability(a[0], a[1], a[2], a[3]);
-		pl.updateLine(4, ChatColor.GOLD + "Helmet: " + a[3]);
-		pl.updateLine(3, ChatColor.GOLD + "Chestplate: " + a[2]);
-		pl.updateLine(2, ChatColor.GOLD + "Leggings: " + a[1]);
-		pl.updateLine(1, ChatColor.GOLD + "Boots: " + a[0]);
+		pl.updateLine(5, ChatColor.GOLD + "Helmet: " + a[3]);
+		pl.updateLine(4, ChatColor.GOLD + "Chestplate: " + a[2]);
+		pl.updateLine(3, ChatColor.GOLD + "Leggings: " + a[1]);
+		pl.updateLine(2, ChatColor.GOLD + "Boots: " + a[0]);
 		} catch(NullPointerException | ConcurrentModificationException exx) {
 			
 		}
@@ -299,7 +315,7 @@ public class CarbyneListener implements Listener {
 			ItemStack is = e.getPlayer().getItemInHand();
 			double dur;
 			if ((dur = GearHandler.getDurability(is)) != -1) {
-			pl.updateLine(0, ChatColor.YELLOW + "Hand: " + dur);
+			pl.updateLine(1, ChatColor.YELLOW + "Hand: " + dur);
 			}
 		} catch(NullPointerException | ConcurrentModificationException | ArrayIndexOutOfBoundsException exx) {
 			
@@ -309,13 +325,13 @@ public class CarbyneListener implements Listener {
 	
 	public int parseArmorType(Material material) {
 		if(material.toString().contains("HELMET")) {
-			return 4;
+			return 5;
 		} else if(material.toString().contains("CHESTPLATE")) {
-			return 3;
+			return 4;
 		} else if(material.toString().contains("LEGGINGS")) {
-			return 2;
+			return 3;
 		} else if (material.toString().contains("BOOTS")) {
-			return 1;
+			return 2;
 		} else return -1;
 	}
 	

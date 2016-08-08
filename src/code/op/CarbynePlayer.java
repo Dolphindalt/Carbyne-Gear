@@ -10,11 +10,13 @@ public class CarbynePlayer {
 	private String name;
 	
 	private int djcd;
+	private boolean skills;
 	
 	public CarbynePlayer(Player p) {
 		this.p = p;
 		this.name = p.getName();
 		this.djcd = 0;
+		this.skills = p.hasPermission("skills.ignore");
 	}
 	
 	public void tick() {
@@ -23,6 +25,7 @@ public class CarbynePlayer {
 	}
 	
 	public void checkFlight() {
+		if (skills) return;
 		if (djcd == 0 && world.getName().equalsIgnoreCase("world")) {
 			p.setAllowFlight(true);
 		} else p.setAllowFlight(false);

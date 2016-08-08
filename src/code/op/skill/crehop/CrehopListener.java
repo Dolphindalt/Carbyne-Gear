@@ -20,6 +20,7 @@ public class CrehopListener implements Listener {
 	
 	@EventHandler
 	public void onFlightToggle(PlayerToggleFlightEvent e) {
+		if (e.getPlayer().hasPermission("skills.ignore")) return;
 		if (e.getPlayer().getLocation().getWorld().getName().equalsIgnoreCase("world")) {
 			CarbynePlayer cp;
 			if ((cp = cpm.getPlayer(e.getPlayer())) != null && cp.getDjcd() == 0)  {
@@ -36,6 +37,7 @@ public class CrehopListener implements Listener {
 	
 	@EventHandler
 	public void onLogin(PlayerJoinEvent e) {
+		if (e.getPlayer().hasPermission("skills.ignore")) return;
 		CarbynePlayer cp = cpm.getPlayer(e.getPlayer());
 		if (cp != null) {
 			cp.setWorld(e.getPlayer().getWorld());
@@ -44,6 +46,7 @@ public class CrehopListener implements Listener {
 	
 	@EventHandler
 	public void worldChange(PlayerChangedWorldEvent e) {
+		if (e.getPlayer().hasPermission("skills.ignore")) return;
 		CarbynePlayer cp = cpm.getPlayer(e.getPlayer());
 		if (cp != null) {
 			cp.setWorld(e.getPlayer().getWorld());

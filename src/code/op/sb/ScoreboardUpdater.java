@@ -33,10 +33,10 @@ public class ScoreboardUpdater implements Runnable {
 
 	public void updateScoreboard(SMPlayer p) {
 		i++;
-		p.updateLine(5, ChatColor.GREEN + "Health: " + Math.floor(p.getPlayer().getHealth()) + " / " + p.getPlayer().getMaxHealth());
+		p.updateLine(6, ChatColor.GREEN + "Health: " + Math.floor(p.getPlayer().getHealth()) + " / " + p.getPlayer().getMaxHealth());
 		switch (i) {
-			case 1: p.updateLine(7, ChatColor.GOLD.toString() + ChatColor.BOLD + "Medieval Lords");
-			case 9: p.updateLine(7, ChatColor.AQUA.toString() + ChatColor.BOLD + "Medieval Lords");
+			case 1: p.updateLine(8, ChatColor.GOLD.toString() + ChatColor.BOLD + "Medieval Lords");
+			case 9: p.updateLine(8, ChatColor.AQUA.toString() + ChatColor.BOLD + "Medieval Lords");
 		
 		}
 		if (i == 18) i = 0;

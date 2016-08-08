@@ -15,14 +15,15 @@ public class ScoreboardJoinListener implements Listener {
 	public void onJoin(PlayerJoinEvent e) {
 		SMPlayer p = SMHandler.getPlayer(e.getPlayer());
 		p.setTitle(HiddenStringUtils.encodeString("_"));
-		p.add(ChatColor.YELLOW + "Hand: " + 0, 0);
-		p.add(ChatColor.GOLD + "B: " + 0, 1);
-		p.add(ChatColor.GOLD + "L: " + 0, 2);
-		p.add(ChatColor.GOLD + "C: " + 0, 3);
-		p.add(ChatColor.GOLD + "H: " + 0, 4);
-		p.add(ChatColor.GREEN + "Health: " + p.getPlayer().getHealth() + " / " + p.getPlayer().getMaxHealth(), 5);
-		p.add(ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH + "----------------", 6);
-		p.add(ChatColor.AQUA.toString() + ChatColor.BOLD + "Medieval Lords", 7);
+		p.add(ChatColor.RED + "Enemy: " + 0, 0);
+		p.add(ChatColor.YELLOW + "Hand: " + 0, 1);
+		p.add(ChatColor.GOLD + "B: " + 0, 2);
+		p.add(ChatColor.GOLD + "L: " + 0, 3);
+		p.add(ChatColor.GOLD + "C: " + 0, 4);
+		p.add(ChatColor.GOLD + "H: " + 0, 5);
+		p.add(ChatColor.GREEN + "Health: " + p.getPlayer().getHealth() + " / " + p.getPlayer().getMaxHealth(), 6);
+		p.add(ChatColor.GRAY.toString() + ChatColor.STRIKETHROUGH + "----------------", 7);
+		p.add(ChatColor.AQUA.toString() + ChatColor.BOLD + "Medieval Lords", 8);
 		p.build();
 		p.sendScoreboard();
 	}
